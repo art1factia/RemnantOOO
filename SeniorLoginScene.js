@@ -13,7 +13,7 @@ class SeniorLoginScene extends BaseScene {
     // 레벨 슬라이더
     this.levelLabel = this.createLabel("난이도 레벨: 5", 0, 0);
     this.levelLabel.style("color", "#333");
-    this.levelSlider = this.createSlider(0, 10, 5, 0, 0);
+    this.levelSlider = this.createSlider(0, 5, 3, 0, 0);
     this.levelSlider.style("width", "400px");
     this.levelSlider.style("height", "12px");
 

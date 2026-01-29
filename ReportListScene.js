@@ -50,6 +50,7 @@ class ReportListScene extends BaseScene {
       const y = startY + (btnHeight + gap) * index;
       btn.position(centerX - btnWidth / 2, y);
     }
+    this.backBtn.position(centerX - btnWidth, this.pg.height + 20);
   }
 
   resize(w, h) {
