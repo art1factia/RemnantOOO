@@ -1,0 +1,106 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family:
+    "Noto Sans KR",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: #fff;
+}
+
+canvas {
+  display: block;
+}
+
+/* Scene DOM Elements */
+.scene-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  background-color: #ddd;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  min-width: 150px;
+}
+
+.scene-button:hover {
+  background-color: #ddd;
+}
+
+.scene-button:active {
+  transform: scale(0.98);
+}
+
+.scene-input {
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.scene-input:focus {
+  border-color: #ddd;
+}
+
+.scene-input::placeholder {
+  color: #666;
+}
+
+.scene-slider {
+  width: 300px;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.scene-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.scene-slider::-webkit-slider-thumb:hover {
+  background: #777;
+}
+
+.scene-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #777;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.scene-label {
+  color: #222;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+.scene-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
