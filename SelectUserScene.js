@@ -2,7 +2,7 @@ class SelectUserScene extends BaseScene {
   enter(app) {
     this.btnWidth = 280;
     this.btnHeight = 70;
-    this.gap = 30;
+    this.gap = 60;
 
     // 시니어 모드 버튼
     this.seniorBtn = this.createButton("시니어 모드", 0, 0, () =>
@@ -31,14 +31,15 @@ class SelectUserScene extends BaseScene {
   updateButtonPositions() {
     const centerX = this.pg.width / 2;
     const centerY = this.pg.height / 2;
+    const offsetY = 100;
 
     this.seniorBtn.position(
       centerX - this.btnWidth / 2,
-      centerY - this.btnHeight - this.gap / 2,
+      centerY + offsetY - this.btnHeight - this.gap / 2,
     );
     this.familyBtn.position(
       centerX - this.btnWidth / 2,
-      centerY + this.gap / 2,
+      centerY + offsetY + this.gap / 2,
     );
   }
 
