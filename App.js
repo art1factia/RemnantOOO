@@ -1,6 +1,12 @@
+// 초기 시작 화면 설정 (개발용)
+// STATES.ADMIN: 관리자 모드
+// STATES.SELECT_USER: 사용자 선택 화면
+// STATES.SENIOR_LOGIN: 시니어 로그인 화면
+const INITIAL_STATE = STATES.SENIOR_LOGIN;
+
 class App {
   constructor() {
-    this.state = STATES.ADMIN; // 초기 상태: 관리자 모드
+    this.state = INITIAL_STATE; // 초기 상태
 
     this.store = {
       // ===== Admin Mode =====

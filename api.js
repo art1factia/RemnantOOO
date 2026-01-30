@@ -1,7 +1,7 @@
-const API_URL = "백엔드 주소";
+const API_URL = "http://52.78.184.202:8080";
 
 // 개발/테스트용 Mock 모드 (true로 설정하면 API 호출 없이 테스트 가능)
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 const headers = {
   "Content-Type": "application/json",
@@ -39,7 +39,8 @@ const mockData = {
         avgTotalScore: 72,
         riskLevel: 1, // 0: 정상, 1: 주의, 2: 위험
         scoreChange: 7,
-        comment: "전반적인 인지 기능은 안정적이나, 새로운 과제에 대한 실행 지연이 관찰됩니다.",
+        comment:
+          "전반적인 인지 기능은 안정적이나, 새로운 과제에 대한 실행 지연이 관찰됩니다.",
       },
       currentRadar: {
         accuracy: 85,
@@ -97,7 +98,7 @@ async function login(data) {
     };
   }
 
-  const res = await fetch(API_URL + `/senior/login`, {
+  const res = await fetch(API_URL + `/users/login`, {
     method: "POST",
     headers,
     body: JSON.stringify(data),
@@ -170,7 +171,7 @@ async function saveAnswer(data) {
     return mockData.saveAnswer;
   }
 
-  const res = await fetch(API_URL + `/staff/answers`, {
+  const res = await fetch(`${API_URL}/staff/answers`, {
     method: "POST",
     headers,
     body: JSON.stringify(data),

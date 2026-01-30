@@ -1,4 +1,7 @@
 class ResultGameScene extends BaseScene {
+  // 개발용 변수: true면 상세 결과 표시, false면 감사 메시지만 표시
+  showResult = false;
+
   enter(app) {
     this.app = app;
 
@@ -30,6 +33,18 @@ class ResultGameScene extends BaseScene {
     const pg = this.pg;
     pg.clear();
     pg.background(255); // 흰색 배경
+
+    // showResult가 false면 감사 메시지만 표시
+    if (!this.showResult) {
+      pg.fill(30);
+      pg.textAlign(CENTER, CENTER);
+      pg.textSize(36);
+      pg.text("감사합니다!", pg.width / 2, pg.height / 2 - 40);
+      pg.fill(100);
+      pg.textSize(20);
+      pg.text("테스트에 참여해 주셔서 감사합니다.", pg.width / 2, pg.height / 2 + 20);
+      return;
+    }
 
     const result = app.store.gameResult;
     if (!result) {
