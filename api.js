@@ -1,7 +1,7 @@
 const API_URL = "http://52.78.184.202:8080";
 
 // 개발/테스트용 Mock 모드 (true로 설정하면 API 호출 없이 테스트 가능)
-const USE_MOCK = false;
+const USE_MOCK = true;
 
 const headers = {
   "Content-Type": "application/json",
