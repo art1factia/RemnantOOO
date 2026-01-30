@@ -2,75 +2,57 @@ class SeniorLoginScene extends BaseScene {
   enter(app) {
     this.app = app;
 
+    // 중앙 정렬 컨테이너
+    this.container = this.createCenteredContainer();
+
+    // 타이틀
+    this.title = this.createTitle("시니어 모드", this.container);
+
+    // 부제목
+    this.subtitle = this.createSubtitle(
+      "게임을 시작하기 전에 정보를 입력해주세요",
+      this.container,
+    );
+
+    // 폼 그룹
+    const formGroup = this.createFormGroup(this.container);
+
     // 닉네임 입력
-    this.nicknameLabel = this.createLabel("닉네임", 0, 0);
-    this.nicknameLabel.style("color", "#333");
-    this.nicknameInput = this.createInput("이름을 입력하세요", 0, 0);
-    this.nicknameInput.style("width", "400px");
-    this.nicknameInput.style("font-size", "20px");
-    this.nicknameInput.style("padding", "16px 20px");
+    this.nicknameLabel = this.createLabelElement("닉네임", formGroup);
+    this.nicknameInput = this.createInputElement(
+      "이름을 입력하세요",
+      formGroup,
+    );
 
     // 레벨 슬라이더
-    this.levelLabel = this.createLabel("난이도 레벨: 5", 0, 0);
-    this.levelLabel.style("color", "#333");
-    this.levelSlider = this.createSlider(0, 5, 3, 0, 0);
-    this.levelSlider.style("width", "400px");
-    this.levelSlider.style("height", "12px");
+    this.levelLabel = this.createLabelElement("난이도 레벨: 1", formGroup);
+    this.levelSlider = this.createSliderElement(1, 3, 1, formGroup);
 
     // 슬라이더 값 변경 시 레이블 업데이트
     this.levelSlider.input(() => {
       this.levelLabel.html(`난이도 레벨: ${this.levelSlider.value()}`);
     });
 
-    // 버튼 컨테이너 (나란히 배치)
-    this.startBtn = this.createButton("시작하기", 0, 0, () =>
-      this.handleStart(app),
-    );
-    this.startBtn.style("font-size", "20px");
-    this.startBtn.style("padding", "16px 32px");
-    this.startBtn.style("min-width", "180px");
-    this.startBtn.style("background-color", "#333");
-    this.startBtn.style("color", "#fff");
+    // 버튼 그룹
+    const buttonGroup = this.createButtonGroup(formGroup);
 
-    this.backBtn = this.createButton("뒤로", 0, 0, () =>
-      app.dispatch({ type: ACTIONS.SELECT_USER }),
+    // 뒤로 버튼
+    this.backBtn = this.createButtonElement(
+      "뒤로",
+      () => app.dispatch({ type: ACTIONS.SELECT_USER }),
+      buttonGroup,
     );
-    this.backBtn.style("font-size", "20px");
-    this.backBtn.style("padding", "16px 32px");
-    this.backBtn.style("min-width", "180px");
     this.backBtn.style("background-color", "#ddd");
     this.backBtn.style("color", "#222");
 
-    // 초기 위치 설정
-    this.updateElementPositions();
-  }
-
-  updateElementPositions() {
-    const centerX = this.pg.width / 2;
-    const centerY = this.pg.height / 2;
-    const inputWidth = 400;
-    const btnWidth = 180;
-    const btnGap = 20;
-
-    this.nicknameLabel.position(centerX - inputWidth / 2, centerY - 120);
-    this.nicknameInput.position(centerX - inputWidth / 2, centerY - 85);
-    this.levelLabel.position(centerX - inputWidth / 2, centerY - 10);
-    this.levelSlider.position(centerX - inputWidth / 2, centerY + 30);
-
-    // 버튼 나란히 배치
-    const totalBtnWidth = btnWidth * 2 + btnGap;
-    this.backBtn.position(centerX - totalBtnWidth / 2, centerY + 100);
-    this.startBtn.position(
-      centerX - totalBtnWidth / 2 + btnWidth + btnGap,
-      centerY + 100,
+    // 시작하기 버튼
+    this.startBtn = this.createButtonElement(
+      "시작하기",
+      () => this.handleStart(app),
+      buttonGroup,
     );
-  }
-
-  resize(w, h) {
-    super.resize(w, h);
-    if (this.nicknameLabel) {
-      this.updateElementPositions();
-    }
+    this.startBtn.style("background-color", "#333");
+    this.startBtn.style("color", "#fff");
   }
 
   async handleStart(app) {
@@ -105,19 +87,6 @@ class SeniorLoginScene extends BaseScene {
   render() {
     const pg = this.pg;
     pg.clear();
-    pg.background(255); // 흰색 배경
-
-    const centerX = pg.width / 2;
-    const titleY = pg.height / 4;
-
-    // 타이틀
-    pg.fill(30);
-    pg.textSize(40);
-    pg.textAlign(CENTER, CENTER);
-    pg.text("시니어 모드", centerX, titleY);
-
-    pg.textSize(20);
-    pg.fill(100);
-    pg.text("게임을 시작하기 전에 정보를 입력해주세요", centerX, titleY + 55);
+    pg.background(255);
   }
 }

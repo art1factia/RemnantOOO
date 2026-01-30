@@ -73,7 +73,7 @@ canvas {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: #ddd;
+  background: #333;
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.2s;

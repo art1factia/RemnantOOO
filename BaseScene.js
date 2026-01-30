@@ -80,6 +80,144 @@ class BaseScene {
     return div;
   }
 
+  // 전체 화면 중앙 정렬 컨테이너 생성
+  createCenteredContainer() {
+    const container = createDiv("");
+    container.class("centered-container");
+    container.style("position", "fixed");
+    container.style("top", "0");
+    container.style("left", "0");
+    container.style("width", "100%");
+    container.style("height", "100%");
+    container.style("display", "flex");
+    container.style("flex-direction", "column");
+    container.style("justify-content", "center");
+    container.style("align-items", "center");
+    container.style("pointer-events", "none");
+    this.domElements.push(container);
+    return container;
+  }
+
+  // 컨테이너 내부에 타이틀 생성
+  createTitle(text, container) {
+    const title = createP(text);
+    title.class("scene-title");
+    title.style("font-size", "clamp(32px, 5vw, 48px)");
+    title.style("font-weight", "bold");
+    title.style("color", "#1e1e1e");
+    title.style("margin", "0 0 10px 0");
+    title.style("text-align", "center");
+    title.style("pointer-events", "auto");
+    if (container) container.child(title);
+    this.domElements.push(title);
+    return title;
+  }
+
+  // 컨테이너 내부에 부제목 생성
+  createSubtitle(text, container) {
+    const subtitle = createP(text);
+    subtitle.class("scene-subtitle");
+    subtitle.style("font-size", "clamp(16px, 2.5vw, 22px)");
+    subtitle.style("color", "#666");
+    subtitle.style("margin", "0 0 40px 0");
+    subtitle.style("text-align", "center");
+    subtitle.style("pointer-events", "auto");
+    if (container) container.child(subtitle);
+    this.domElements.push(subtitle);
+    return subtitle;
+  }
+
+  // 컨테이너 내부에 폼 그룹 생성
+  createFormGroup(container) {
+    const group = createDiv("");
+    group.class("form-group");
+    group.style("display", "flex");
+    group.style("flex-direction", "column");
+    group.style("align-items", "center");
+    group.style("width", "100%");
+    group.style("max-width", "440px");
+    group.style("padding", "0 20px");
+    group.style("box-sizing", "border-box");
+    group.style("pointer-events", "auto");
+    if (container) container.child(group);
+    this.domElements.push(group);
+    return group;
+  }
+
+  // 버튼 그룹 (가로 배치)
+  createButtonGroup(container) {
+    const group = createDiv("");
+    group.class("button-group");
+    group.style("display", "flex");
+    group.style("flex-wrap", "wrap");
+    group.style("justify-content", "center");
+    group.style("gap", "16px");
+    group.style("margin-top", "30px");
+    group.style("pointer-events", "auto");
+    if (container) container.child(group);
+    this.domElements.push(group);
+    return group;
+  }
+
+  // 컨테이너에 추가할 수 있는 버튼 생성
+  createButtonElement(label, onClick, parent) {
+    const btn = createButton(label);
+    btn.mousePressed(onClick);
+    btn.class("scene-button");
+    btn.style("font-size", "clamp(16px, 2vw, 20px)");
+    btn.style("padding", "16px 32px");
+    btn.style("min-width", "160px");
+    btn.style("border", "none");
+    btn.style("border-radius", "8px");
+    btn.style("cursor", "pointer");
+    btn.style("transition", "background-color 0.2s");
+    if (parent) parent.child(btn);
+    this.domElements.push(btn);
+    return btn;
+  }
+
+  // 컨테이너에 추가할 수 있는 입력창 생성
+  createInputElement(placeholder, parent) {
+    const inp = createInput("");
+    inp.attribute("placeholder", placeholder);
+    inp.class("scene-input");
+    inp.style("width", "100%");
+    inp.style("font-size", "clamp(16px, 2vw, 20px)");
+    inp.style("padding", "16px 20px");
+    inp.style("border", "1px solid #ccc");
+    inp.style("border-radius", "8px");
+    inp.style("box-sizing", "border-box");
+    inp.style("margin-bottom", "20px");
+    if (parent) parent.child(inp);
+    this.domElements.push(inp);
+    return inp;
+  }
+
+  // 컨테이너에 추가할 수 있는 레이블 생성
+  createLabelElement(text, parent) {
+    const lbl = createP(text);
+    lbl.class("scene-label");
+    lbl.style("font-size", "clamp(14px, 1.8vw, 18px)");
+    lbl.style("color", "#333");
+    lbl.style("margin", "0 0 8px 0");
+    lbl.style("align-self", "flex-start");
+    if (parent) parent.child(lbl);
+    this.domElements.push(lbl);
+    return lbl;
+  }
+
+  // 컨테이너에 추가할 수 있는 슬라이더 생성
+  createSliderElement(min, max, value, parent) {
+    const slider = createSlider(min, max, value);
+    slider.class("scene-slider");
+    slider.style("width", "100%");
+    slider.style("height", "12px");
+    slider.style("margin-bottom", "20px");
+    if (parent) parent.child(slider);
+    this.domElements.push(slider);
+    return slider;
+  }
+
   // 모든 DOM 요소 제거
   clearDomElements() {
     for (const el of this.domElements) {

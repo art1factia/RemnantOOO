@@ -2,61 +2,45 @@ class FamilyLoginScene extends BaseScene {
   enter(app) {
     this.app = app;
 
+    // 중앙 정렬 컨테이너
+    this.container = this.createCenteredContainer();
+
+    // 타이틀
+    this.title = this.createTitle("보호자 모드", this.container);
+
+    // 부제목
+    this.subtitle = this.createSubtitle(
+      "레포트를 확인하려면 보호자 ID를 입력하세요",
+      this.container
+    );
+
+    // 폼 그룹
+    const formGroup = this.createFormGroup(this.container);
+
     // 보호자 ID 입력
-    this.idLabel = this.createLabel("보호자 ID", 0, 0);
-    this.idLabel.style("color", "#333");
-    this.idInput = this.createInput("보호자 ID를 입력하세요", 0, 0);
-    this.idInput.style("width", "400px");
-    this.idInput.style("font-size", "20px");
-    this.idInput.style("padding", "16px 20px");
+    this.idLabel = this.createLabelElement("보호자 ID", formGroup);
+    this.idInput = this.createInputElement("보호자 ID를 입력하세요", formGroup);
 
-    // 버튼 (나란히 배치)
-    this.confirmBtn = this.createButton("레포트 확인", 0, 0, () =>
-      this.handleLogin(app),
-    );
-    this.confirmBtn.style("font-size", "20px");
-    this.confirmBtn.style("padding", "16px 32px");
-    this.confirmBtn.style("min-width", "180px");
-    this.confirmBtn.style("background-color", "#333");
-    this.confirmBtn.style("color", "#fff");
+    // 버튼 그룹
+    const buttonGroup = this.createButtonGroup(formGroup);
 
-    this.backBtn = this.createButton("뒤로", 0, 0, () =>
-      app.dispatch({ type: ACTIONS.SELECT_USER }),
+    // 뒤로 버튼
+    this.backBtn = this.createButtonElement(
+      "뒤로",
+      () => app.dispatch({ type: ACTIONS.SELECT_USER }),
+      buttonGroup
     );
-    this.backBtn.style("font-size", "20px");
-    this.backBtn.style("padding", "16px 32px");
-    this.backBtn.style("min-width", "180px");
     this.backBtn.style("background-color", "#ddd");
     this.backBtn.style("color", "#222");
 
-    // 초기 위치 설정
-    this.updateElementPositions();
-  }
-
-  updateElementPositions() {
-    const centerX = this.pg.width / 2;
-    const centerY = this.pg.height / 2;
-    const inputWidth = 400;
-    const btnWidth = 180;
-    const btnGap = 20;
-
-    this.idLabel.position(centerX - inputWidth / 2, centerY - 60);
-    this.idInput.position(centerX - inputWidth / 2, centerY - 25);
-
-    // 버튼 나란히 배치
-    const totalBtnWidth = btnWidth * 2 + btnGap;
-    this.backBtn.position(centerX - totalBtnWidth / 2, centerY + 60);
-    this.confirmBtn.position(
-      centerX - totalBtnWidth / 2 + btnWidth + btnGap,
-      centerY + 60,
+    // 레포트 확인 버튼
+    this.confirmBtn = this.createButtonElement(
+      "레포트 확인",
+      () => this.handleLogin(app),
+      buttonGroup
     );
-  }
-
-  resize(w, h) {
-    super.resize(w, h);
-    if (this.idLabel) {
-      this.updateElementPositions();
-    }
+    this.confirmBtn.style("background-color", "#333");
+    this.confirmBtn.style("color", "#fff");
   }
 
   async handleLogin(app) {
@@ -89,19 +73,6 @@ class FamilyLoginScene extends BaseScene {
   render() {
     const pg = this.pg;
     pg.clear();
-    pg.background(255); // 흰색 배경
-
-    const centerX = pg.width / 2;
-    const titleY = pg.height / 4;
-
-    // 타이틀
-    pg.fill(30);
-    pg.textSize(40);
-    pg.textAlign(CENTER, CENTER);
-    pg.text("보호자 모드", centerX, titleY);
-
-    pg.textSize(20);
-    pg.fill(100);
-    pg.text("레포트를 확인하려면 보호자 ID를 입력하세요", centerX, titleY + 55);
+    pg.background(255);
   }
 }
