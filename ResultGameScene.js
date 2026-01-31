@@ -5,107 +5,139 @@ class ResultGameScene extends BaseScene {
   enter(app) {
     this.app = app;
 
-    // 다시하기 버튼
-    this.retryBtn = this.createButton("다시하기", 0, 0, () => {
-      app.dispatch({ type: ACTIONS.RETRY_GAME });
-    });
-    this.retryBtn.style("font-size", "22px");
-    this.retryBtn.style("padding", "18px 36px");
-    this.retryBtn.style("min-width", "200px");
-    this.retryBtn.style("background-color", "#ddd");
-    this.retryBtn.style("color", "#222");
+    // 중앙 정렬 컨테이너
+    this.container = this.createCenteredContainer();
 
-    this.updateButtonPosition();
-  }
-
-  updateButtonPosition() {
-    this.retryBtn.position(this.pg.width / 2 - 60, this.pg.height - 80);
-  }
-
-  resize(w, h) {
-    super.resize(w, h);
-    if (this.retryBtn) {
-      this.updateButtonPosition();
+    if (!this.showResult) {
+      // 감사 메시지 모드
+      this.createThankYouView(app);
+    } else {
+      // 결과 표시 모드
+      this.createResultView(app);
     }
+  }
+
+  createThankYouView(app) {
+    // 타이틀
+    this.title = this.createTitle("감사합니다!", this.container);
+    this.title.style("font-size", "clamp(32px, 5vw, 48px)");
+
+    // 부제목
+    this.subtitle = this.createSubtitle(
+      "테스트에 참여해 주셔서 감사합니다.",
+      this.container
+    );
+
+    // 버튼 그룹
+    const buttonGroup = this.createButtonGroup(this.container);
+
+    // 다시하기 버튼
+    this.retryBtn = this.createButtonElement(
+      "다시하기",
+      () => app.dispatch({ type: ACTIONS.RETRY_GAME }),
+      buttonGroup
+    );
+    this.retryBtn.style("padding", "18px 36px");
+    this.retryBtn.style("font-size", "clamp(18px, 2.5vw, 22px)");
+    this.retryBtn.style("min-width", "200px");
+    this.retryBtn.style("background-color", "#333");
+    this.retryBtn.style("color", "#fff");
+  }
+
+  createResultView(app) {
+    // 결과 컨테이너
+    const resultContainer = createDiv("");
+    resultContainer.style("display", "flex");
+    resultContainer.style("flex-direction", "column");
+    resultContainer.style("align-items", "center");
+    resultContainer.style("width", "100%");
+    resultContainer.style("max-width", "600px");
+    resultContainer.style("padding", "20px");
+    resultContainer.style("box-sizing", "border-box");
+    resultContainer.style("pointer-events", "auto");
+    this.container.child(resultContainer);
+    this.domElements.push(resultContainer);
+
+    // 타이틀
+    this.title = this.createTitle("게임 결과", resultContainer);
+
+    // 점수 영역
+    const scoreContainer = createDiv("");
+    scoreContainer.style("width", "100%");
+    scoreContainer.style("margin", "20px 0");
+    resultContainer.child(scoreContainer);
+    this.domElements.push(scoreContainer);
+
+    // 결과 데이터가 있으면 표시
+    const result = app.store.gameResult;
+    if (result) {
+      this.createScoreItem(scoreContainer, "종합 점수", result.totalScore, "#F57C00", "전체적인 게임 수행 능력을 나타냅니다");
+      this.createScoreItem(scoreContainer, "민첩성", result.agility, "#2962FF", "틀린 부분을 얼마나 빠르게 찾았는지를 나타냅니다");
+      this.createScoreItem(scoreContainer, "판단력", result.judgment, "#2E7D32", "정확하게 틀린 부분을 클릭했는지를 나타냅니다");
+    }
+
+    // 버튼 그룹
+    const buttonGroup = this.createButtonGroup(resultContainer);
+
+    // 다시하기 버튼
+    this.retryBtn = this.createButtonElement(
+      "다시하기",
+      () => app.dispatch({ type: ACTIONS.RETRY_GAME }),
+      buttonGroup
+    );
+    this.retryBtn.style("padding", "18px 36px");
+    this.retryBtn.style("font-size", "clamp(18px, 2.5vw, 22px)");
+    this.retryBtn.style("min-width", "200px");
+    this.retryBtn.style("background-color", "#333");
+    this.retryBtn.style("color", "#fff");
+  }
+
+  createScoreItem(container, label, score, color, description) {
+    const item = createDiv("");
+    item.style("margin-bottom", "20px");
+    item.style("padding", "15px");
+    item.style("background", "#f9f9f9");
+    item.style("border-radius", "8px");
+    item.style("border-left", `4px solid ${color}`);
+    container.child(item);
+    this.domElements.push(item);
+
+    const scoreText = createP(`${label}: ${score}점`);
+    scoreText.style("font-size", "clamp(20px, 3vw, 26px)");
+    scoreText.style("font-weight", "bold");
+    scoreText.style("color", color);
+    scoreText.style("margin", "0 0 8px 0");
+    item.child(scoreText);
+    this.domElements.push(scoreText);
+
+    const descText = createP(description);
+    descText.style("font-size", "clamp(14px, 2vw, 18px)");
+    descText.style("color", "#666");
+    descText.style("margin", "0");
+    item.child(descText);
+    this.domElements.push(descText);
   }
 
   render(app) {
     const pg = this.pg;
     pg.clear();
-    pg.background(255); // 흰색 배경
+    pg.background(255);
 
-    // showResult가 false면 감사 메시지만 표시
-    if (!this.showResult) {
-      pg.fill(30);
-      pg.textAlign(CENTER, CENTER);
-      pg.textSize(36);
-      pg.text("감사합니다!", pg.width / 2, pg.height / 2 - 40);
-      pg.fill(100);
-      pg.textSize(20);
-      pg.text("테스트에 참여해 주셔서 감사합니다.", pg.width / 2, pg.height / 2 + 20);
-      return;
-    }
+    // showResult가 true이고 그래프가 있으면 캔버스에 그래프 그리기
+    if (this.showResult) {
+      const result = app.store.gameResult;
+      if (result && result.graph && result.graph.length > 0) {
+        const padding = 40;
+        const graphY = pg.height - 280;
+        this.drawGraph(pg, result.graph, padding, graphY, pg.width - padding * 2, 180);
 
-    const result = app.store.gameResult;
-    if (!result) {
-      pg.fill(50);
-      pg.textAlign(CENTER, CENTER);
-      pg.textSize(20);
-      pg.text("결과를 불러오는 중...", pg.width / 2, pg.height / 2);
-      return;
-    }
-
-    const padding = 40;
-    let y = 60;
-
-    // 타이틀
-    pg.fill(30);
-    pg.textSize(40);
-    pg.textAlign(CENTER, TOP);
-    pg.text("게임 결과", pg.width / 2, y);
-    y += 80;
-
-    // 점수 정보
-    pg.textAlign(LEFT, TOP);
-    pg.textSize(26);
-
-    // 종합 점수
-    pg.fill(245, 124, 0); // 주황색
-    pg.text(`종합 점수: ${result.totalScore}점`, padding, y);
-    pg.fill(100);
-    pg.textSize(18);
-    pg.text("전체적인 게임 수행 능력을 나타냅니다", padding, y + 35);
-    y += 85;
-
-    // 민첩성
-    pg.fill(41, 98, 255); // 파란색
-    pg.textSize(26);
-    pg.text(`민첩성: ${result.agility}점`, padding, y);
-    pg.fill(100);
-    pg.textSize(18);
-    pg.text("틀린 부분을 얼마나 빠르게 찾았는지를 나타냅니다", padding, y + 35);
-    y += 85;
-
-    // 판단력
-    pg.fill(46, 125, 50); // 초록색
-    pg.textSize(26);
-    pg.text(`판단력: ${result.judgment}점`, padding, y);
-    pg.fill(100);
-    pg.textSize(18);
-    pg.text("정확하게 틀린 부분을 클릭했는지를 나타냅니다", padding, y + 35);
-    y += 95;
-
-    // 그래프
-    if (result.graph && result.graph.length > 0) {
-      this.drawGraph(pg, result.graph, padding, y, pg.width - padding * 2, 180);
-      y += 200;
-
-      // 경향성 분석 텍스트
-      pg.fill(30);
-      pg.textSize(20);
-      pg.textAlign(CENTER, TOP);
-      const trend = this.analyzeTrend(result.graph);
-      pg.text(`경향성 분석: ${trend}`, pg.width / 2, y);
+        // 경향성 분석 텍스트
+        pg.fill(30);
+        pg.textSize(18);
+        pg.textAlign(CENTER, TOP);
+        const trend = this.analyzeTrend(result.graph);
+        pg.text(`경향성 분석: ${trend}`, pg.width / 2, graphY + 190);
+      }
     }
   }
 
