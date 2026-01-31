@@ -1,4 +1,4 @@
-const API_URL = "https://52.78.184.202:8080";
+const API_URL = "https://zarit.store";
 
 // 개발/테스트용 Mock 모드 (true로 설정하면 API 호출 없이 테스트 가능)
 const USE_MOCK = false;
