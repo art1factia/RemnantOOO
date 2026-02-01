@@ -1,6 +1,6 @@
 class ResultGameScene extends BaseScene {
   // 개발용 변수: true면 상세 결과 표시, false면 감사 메시지만 표시
-  showResult = false;
+  showResult = true;
 
   enter(app) {
     this.app = app;
@@ -25,7 +25,7 @@ class ResultGameScene extends BaseScene {
     // 부제목
     this.subtitle = this.createSubtitle(
       "테스트에 참여해 주셔서 감사합니다.",
-      this.container
+      this.container,
     );
 
     // 버튼 그룹
@@ -35,7 +35,7 @@ class ResultGameScene extends BaseScene {
     this.retryBtn = this.createButtonElement(
       "다시하기",
       () => app.dispatch({ type: ACTIONS.RETRY_GAME }),
-      buttonGroup
+      buttonGroup,
     );
     this.retryBtn.style("padding", "18px 36px");
     this.retryBtn.style("font-size", "clamp(18px, 2.5vw, 22px)");
@@ -71,9 +71,27 @@ class ResultGameScene extends BaseScene {
     // 결과 데이터가 있으면 표시
     const result = app.store.gameResult;
     if (result) {
-      this.createScoreItem(scoreContainer, "종합 점수", result.totalScore, "#F57C00", "전체적인 게임 수행 능력을 나타냅니다");
-      this.createScoreItem(scoreContainer, "민첩성", result.agility, "#2962FF", "틀린 부분을 얼마나 빠르게 찾았는지를 나타냅니다");
-      this.createScoreItem(scoreContainer, "판단력", result.judgment, "#2E7D32", "정확하게 틀린 부분을 클릭했는지를 나타냅니다");
+      this.createScoreItem(
+        scoreContainer,
+        "종합 점수",
+        result.totalScore,
+        "#F57C00",
+        "전체적인 게임 수행 능력을 나타냅니다",
+      );
+      this.createScoreItem(
+        scoreContainer,
+        "민첩성",
+        result.agility,
+        "#2962FF",
+        "틀린 부분을 얼마나 빠르게 찾았는지를 나타냅니다",
+      );
+      this.createScoreItem(
+        scoreContainer,
+        "판단력",
+        result.judgment,
+        "#2E7D32",
+        "정확하게 틀린 부분을 클릭했는지를 나타냅니다",
+      );
     }
 
     // 버튼 그룹
@@ -83,7 +101,7 @@ class ResultGameScene extends BaseScene {
     this.retryBtn = this.createButtonElement(
       "다시하기",
       () => app.dispatch({ type: ACTIONS.RETRY_GAME }),
-      buttonGroup
+      buttonGroup,
     );
     this.retryBtn.style("padding", "18px 36px");
     this.retryBtn.style("font-size", "clamp(18px, 2.5vw, 22px)");
@@ -129,7 +147,14 @@ class ResultGameScene extends BaseScene {
       if (result && result.graph && result.graph.length > 0) {
         const padding = 40;
         const graphY = pg.height - 280;
-        this.drawGraph(pg, result.graph, padding, graphY, pg.width - padding * 2, 180);
+        this.drawGraph(
+          pg,
+          result.graph,
+          padding,
+          graphY,
+          pg.width - padding * 2,
+          180,
+        );
 
         // 경향성 분석 텍스트
         pg.fill(30);
